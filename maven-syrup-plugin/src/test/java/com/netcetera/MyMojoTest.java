@@ -23,7 +23,7 @@ public class MyMojoTest extends AbstractMojoTestCase {
    * @throws Exception if any
    */
   public void testSomething() throws Exception {
-    File pom = getTestFile("src/test/resources/pom.xml");
+    File pom = getTestFile("src/test/resources/test-pom.xml");
     assertNotNull(pom);
     assertTrue(pom.exists());
 
