@@ -37,7 +37,6 @@ public class SyrupMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    System.out.println("Yes!");
     System.out.println(project.getArtifactId());
   }
 
