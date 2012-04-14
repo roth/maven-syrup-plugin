@@ -23,7 +23,8 @@ import static com.netcetera.extractor.metadata.ItemList.ListType.BULLET;
 import static com.netcetera.extractor.metadata.ItemList.ListType.LOWER_ALPHA;
 import static com.netcetera.extractor.metadata.Paragraph.toParagraph;
 import static com.netcetera.extractor.metadata.SimpleElementFactory.text;
-import static java.util.Collections.singletonList;
+import static com.netcetera.extractor.metadata.Table.Alignment.LEFT;
+import static edu.emory.mathcs.backport.java.util.Collections.nCopies;
 import static org.codehaus.plexus.PlexusTestCase.getBasedir;
 
 /**
@@ -42,14 +43,29 @@ public class AptFileTest {
 
     File file = new File(getBasedir() + "\\src\\site\\apt\\source.apt");
 
-    AptElement paragraph0 = toParagraph(singletonList(text("Paragraph contained in list item 2.")));
-    AptElement paragraph1 = toParagraph(singletonList(text("Paragrapgh 1 in Chapter 1")));
-    AptElement paragraph2 = toParagraph(singletonList(text("Paragrapgh 2 in Chapter 1")));
-    AptElement paragraph3 = toParagraph(singletonList(text("Paragrapgh 1 in Chapter 2")));
-    AptElement paragraph4 = toParagraph(singletonList(text("Paragrapgh 2 in Chapter 2")));
+    AptElement paragraph0 = toParagraph("Paragraph contained in list item 2.");
+    AptElement paragraph1 = toParagraph("Paragrapgh 1 in Chapter 1");
+    AptElement paragraph2 = toParagraph("Paragrapgh 2 in Chapter 1");
+    AptElement paragraph3 = toParagraph("Paragrapgh 1 in Chapter 2");
+    AptElement paragraph4 = toParagraph("Paragrapgh 2 in Chapter 2");
     Paragraph paragraph5 = new Paragraph();
     paragraph5.startParagraph("Paragrapgh 2 in Chapter 1.1");
     paragraph5.endParagraph("End Paragraph in Chapter 1.1");
+
+    Table table1 = new Table(null, false);
+    table1.row(nCopies(5, text("Header Row")), false);
+    table1.row(nCopies(4, text("Row 1")));
+
+    Table table0 = new Table(LEFT, true);
+    table0.row(nCopies(5, text("Header Row")), true);
+    table0.row(nCopies(4, text("Row 1")));
+    table0.row(nCopies(6, text("Row 2")));
+    table0.row(nCopies(5, text("Row 3")));
+
+    Table table2 = new Table(null, false);
+    table2.row(nCopies(5, text("Header Row")), false);
+    table2.row(nCopies(4, text("Row 1")));
+
 
     ItemList list = new ItemList();
 
@@ -60,6 +76,7 @@ public class AptFileTest {
 
     list.startList(LOWER_ALPHA);
     list.listItem("Sub-list item 1.");
+    list.append(table1);
     list.listItem("Sub-list item 2.");
     list.endList();
 
@@ -74,19 +91,20 @@ public class AptFileTest {
     section.startSection2("Chapter 1.1");
     section.append(list);
     section.append(paragraph5);
-    section.endSection2();
-
-    section.endSection1();
+    section.startSection3("Chapter 1.1.1");
+    section.append(table2);
+    section.startSection2("Chapter 1.2");
 
     section.startSection1("Chapter 2");
     section.append(paragraph3);
     section.append(paragraph4);
-    section.endSection1();
+
 
     FileWriter fileWriter = new FileWriter(file);
 
     AptFile aptBuilder = new AptFile(fileWriter);
     aptBuilder.head("So ein schöner Title", "dummy");
+    aptBuilder.append(table0);
     aptBuilder.append(section);
     aptBuilder.close();
 

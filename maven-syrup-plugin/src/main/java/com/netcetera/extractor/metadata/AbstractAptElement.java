@@ -56,12 +56,27 @@ abstract class AbstractAptElement implements AptElement, Appendable {
     getSink().lineBreak();
   }
 
+  /**
+   * See method name.
+   * 
+   * @param aptElement .
+   */
+  public void append(SimpleAptElement aptElement) {
+    sink.text(aptElement.getText());
+  }
+
   @Override
   public String getText() {
+    doBeforeClose();
     sink.flush();
     sink.close();
     return writer.toString();
   }
+
+  /**
+   * Called before {@link #getText()} is executed.
+   */
+  protected abstract void doBeforeClose();
 
   protected AptSink getSink() {
     return sink;

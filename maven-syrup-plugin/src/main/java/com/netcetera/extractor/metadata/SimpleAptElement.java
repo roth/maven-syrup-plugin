@@ -20,6 +20,13 @@ package com.netcetera.extractor.metadata;
  * <b>Must never have a line breaker at the end.</b>
  * </p>
  */
-public interface SimpleAptElement extends AptElement {
+public interface SimpleAptElement {
+
+  /**
+   * get the formated element.
+   * 
+   * @return formated element.
+   */
+  String getText();
 
 }

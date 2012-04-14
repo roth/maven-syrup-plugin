@@ -6,6 +6,16 @@
  2012-04-14
  -----
 
+*----+--+--+--+--+
+||Header Row||Header Row||Header Row||Header Row||Header Row|
+*----+--+--+--+
+|Row 1|Row 1|Row 1|Row 1|
+*----+--+--+--+--+--+
+|Row 2|Row 2|Row 2|Row 2|Row 2|Row 2|
+*----+--+--+--+--+
+|Row 3|Row 3|Row 3|Row 3|Row 3|
+*----+--+--+--+--+
+
 Chapter 1
 
 
@@ -29,6 +39,12 @@ Chapter 1
 
   [[a]] Sub\-list item 1.
 
+*----*--*--*--*--*
+Header Row|Header Row|Header Row|Header Row|Header Row|
+*----*--*--*--*
+Row 1|Row 1|Row 1|Row 1|
+*----*--*--*--*
+
   [[a]] Sub\-list item 2.
 
 
@@ -40,6 +56,16 @@ Chapter 1
 End Paragraph in Chapter 1.1
 
 
+**Chapter 1.1.1
+
+
+*----*--*--*--*--*
+Header Row|Header Row|Header Row|Header Row|Header Row|
+*----*--*--*--*
+Row 1|Row 1|Row 1|Row 1|
+*----*--*--*--*
+
+*Chapter 1.2
 
 
 Chapter 2

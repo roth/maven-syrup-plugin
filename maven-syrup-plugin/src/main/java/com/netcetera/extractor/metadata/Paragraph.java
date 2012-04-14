@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.netcetera.extractor.metadata.SimpleElementFactory.text;
+import static java.util.Collections.singletonList;
 
 /**
  * Apt paragraph element.
@@ -84,5 +85,21 @@ public class Paragraph extends AbstractAptElement {
 
     paragraph.endParagraph();
     return paragraph;
+
+  }
+
+  /**
+   * see method name.
+   * 
+   * @param text .
+   * @return .
+   */
+  public static final AptElement toParagraph(String text) {
+    return toParagraph(singletonList(text(text)));
+  }
+
+  @Override
+  protected void doBeforeClose() {
+
   }
 }

@@ -16,13 +16,27 @@ package com.netcetera.extractor.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.defaultString;
+
 
 /**
  * c.
  */
 public final class SimpleElementFactory {
 
-  private static final class SimpleElement extends AbstractAptElement implements SimpleAptElement {
+  private static final class SimpleElement implements SimpleAptElement {
+
+    private final String text;
+
+    SimpleElement(String text) {
+      this.text = text;
+    }
+
+
+    @Override
+    public String getText() {
+      return defaultString(text, "-");
+    }
   };
 
   /**
@@ -34,14 +48,11 @@ public final class SimpleElementFactory {
    */
   public static <T> SimpleAptElement text(T text) {
 
-    SimpleElement element = new SimpleElement();
-
-    if (text != null) {
-      element.getSink().text(text.toString());
-      element.getSink().flush();
+    if (text == null) {
+      return new SimpleElement(null);
+    } else {
+      return new SimpleElement(text.toString());
     }
-
-    return element;
 
   }
 

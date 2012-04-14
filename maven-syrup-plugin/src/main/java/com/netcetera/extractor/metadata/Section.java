@@ -27,7 +27,7 @@ public class Section extends AbstractAptElement {
    * 
    * @param title .
    */
-  public void startSection1(AptElement title) {
+  public void startSection1(SimpleAptElement title) {
 
     getSink().section1();
     getSink().sectionTitle1();
@@ -38,7 +38,7 @@ public class Section extends AbstractAptElement {
   }
 
   /**
-   * {@link #startSection1(AptElement)}.
+   * {@link #startSection1(SimpleAptElement)}.
    * 
    * @param title .
    */
@@ -53,7 +53,7 @@ public class Section extends AbstractAptElement {
    * 
    * @param title .
    */
-  public void startSection2(AptElement title) {
+  public void startSection2(SimpleAptElement title) {
 
     getSink().section2();
     getSink().sectionTitle2();
@@ -64,7 +64,7 @@ public class Section extends AbstractAptElement {
   }
 
   /**
-   * {@link #startSection2(AptElement)}.
+   * {@link #startSection2(SimpleAptElement)}.
    * 
    * @param title .
    */
@@ -80,7 +80,7 @@ public class Section extends AbstractAptElement {
    * 
    * @param title .
    */
-  public void startSection3(AptElement title) {
+  public void startSection3(SimpleAptElement title) {
 
     getSink().section3();
     getSink().sectionTitle3();
@@ -92,7 +92,7 @@ public class Section extends AbstractAptElement {
 
 
   /**
-   * {@link #startSection3(AptElement)}.
+   * {@link #startSection3(SimpleAptElement)}.
    * 
    * @param title .
    */
@@ -108,7 +108,7 @@ public class Section extends AbstractAptElement {
    * 
    * @param title .
    */
-  public void startSection4(AptElement title) {
+  public void startSection4(SimpleAptElement title) {
 
     getSink().section4();
     getSink().sectionTitle4();
@@ -120,7 +120,7 @@ public class Section extends AbstractAptElement {
 
 
   /**
-   * {@link #startSection4(AptElement)}.
+   * {@link #startSection4(SimpleAptElement)}.
    * 
    * @param title .
    */
@@ -130,47 +130,9 @@ public class Section extends AbstractAptElement {
 
   }
 
-  /**
-   * end section1.
-   */
-  public void endSection1() {
-
+  @Override
+  protected void doBeforeClose() {
     getSink().section1_();
     getSink().flush();
-
   }
-
-
-  /**
-   * end section2.
-   */
-  public void endSection2() {
-
-    getSink().section2_();
-    getSink().flush();
-
-  }
-
-
-  /**
-   * end section3.
-   */
-  public void endSection3() {
-
-    getSink().section3_();
-    getSink().flush();
-
-  }
-
-
-  /**
-   * end section4.
-   */
-  public void endSection4() {
-
-    getSink().section4_();
-    getSink().flush();
-
-  }
-
 }

@@ -69,7 +69,7 @@ public class ItemList extends AbstractAptElement {
    * 
    * @param text .
    */
-  public void listItem(AptElement text) {
+  public void listItem(SimpleAptElement text) {
 
     getSink().listItem();
     append(text);
@@ -102,7 +102,7 @@ public class ItemList extends AbstractAptElement {
   }
 
   /**
-   * {@link #listItem(AptElement)}.
+   * {@link #listItem(SimpleAptElement)}.
    * 
    * @param text .
    */
@@ -134,6 +134,11 @@ public class ItemList extends AbstractAptElement {
     }
 
     return list;
+  }
+
+  @Override
+  protected void doBeforeClose() {
+
   }
 
 }
