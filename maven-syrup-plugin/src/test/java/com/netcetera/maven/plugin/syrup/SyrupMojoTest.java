@@ -13,10 +13,12 @@ package com.netcetera.maven.plugin.syrup;
 import java.io.File;
 
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.junit.Ignore;
 
 /**
  * Example test for running a Mojo.
  */
+@Ignore
 public class SyrupMojoTest extends AbstractMojoTestCase {
 
   /**
