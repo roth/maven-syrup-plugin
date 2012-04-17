@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.commons.io.FileUtils;
+
 import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
 
 
@@ -27,6 +29,9 @@ public class DotExecInterpreter implements IDotInterpreter {
   @Override
   public void convertToImage(GraphConfiguration config) throws IOException {
     File outputDirectory = new File(config.getOutputDirectory());
+    if (outputDirectory.exists()) {
+      FileUtils.forceMkdir(outputDirectory);
+    }
     File imageFile = new File(outputDirectory, config.getGraphName() + "." + config.getOutputType());
     File dotFile = new File(outputDirectory, config.getGraphName() + ".dot");
 

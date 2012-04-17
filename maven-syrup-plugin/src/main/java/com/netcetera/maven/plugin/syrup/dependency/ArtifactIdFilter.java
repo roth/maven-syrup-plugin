@@ -31,14 +31,12 @@ public class ArtifactIdFilter implements ArtifactFilter {
   public boolean include(Artifact artifact) {
 
     String id = artifact.getGroupId() + ":" + artifact.getArtifactId();
-    System.out.println("Testing: " + id);
     boolean matched = false;
     for (String regexPattern : regexPatterns) {
       if (id.matches(regexPattern)) {
         matched = true;
       }
     }
-    System.out.println("Including: " + matched);
     return matched;
   }
 

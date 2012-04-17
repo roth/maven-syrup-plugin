@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -40,6 +41,9 @@ public class DotGoogleChartInterpreter implements IDotInterpreter {
   @Override
   public void convertToImage(GraphConfiguration config) throws IOException {
     File outputDirectory = new File(config.getOutputDirectory());
+    if (outputDirectory.exists()) {
+      FileUtils.forceMkdir(outputDirectory);
+    }
     File imageFile = new File(outputDirectory, config.getGraphName() + ".png");
     File dotFile = new File(outputDirectory, config.getGraphName() + ".dot");
 
