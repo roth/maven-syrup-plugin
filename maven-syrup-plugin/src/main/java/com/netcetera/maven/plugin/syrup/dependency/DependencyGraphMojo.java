@@ -38,7 +38,7 @@ import com.netcetera.maven.plugin.syrup.dependency.graph.IGraphRenderer;
  * Creates a dependency graph, either starting from the current module or from the module defined in
  * the configuration.
  * 
- * @goal graph
+ * @goal graph the goal
  * @phase process-sources
  */
 public class DependencyGraphMojo extends AbstractMojo {
@@ -106,7 +106,7 @@ public class DependencyGraphMojo extends AbstractMojo {
   private DependencyTreeBuilder treeBuilder;
 
   /** @component */
-  protected MavenProjectBuilder projectBuilder;
+  private MavenProjectBuilder projectBuilder;
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {

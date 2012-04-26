@@ -39,6 +39,10 @@ public class GraphConfiguration {
 
   private String outputType;
 
+  private String graphWidth;
+
+  private String graphHeight;
+
   public String getGroupId() {
     return groupId;
   }
@@ -159,6 +163,15 @@ public class GraphConfiguration {
    */
   public void setRendererPath(String rendererPath) {
     this.rendererPath = rendererPath;
+  }
+
+
+  public String getGraphWidth() {
+    return graphWidth;
+  }
+
+  public String getGraphHeight() {
+    return graphHeight;
   }
 
 

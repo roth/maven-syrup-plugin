@@ -24,7 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.traversal.CollectingDependencyNodeVisitor;
 
@@ -37,7 +39,9 @@ import com.netcetera.maven.plugin.syrup.dependency.graph.IGraphRenderer;
  */
 public class DotRenderer implements IGraphRenderer {
 
-  private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+  private static final SystemStreamLog LOGGER = new SystemStreamLog();
+
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
   @Override
   public void createDependencyGraph(GraphConfiguration config, DependencyNode rootNode)
@@ -49,7 +53,9 @@ public class DotRenderer implements IGraphRenderer {
 
     File outputDirectory = new File(config.getOutputDirectory());
     if (!outputDirectory.exists()) {
-      outputDirectory.mkdir();
+      LOGGER.info("output directory " + outputDirectory.getAbsolutePath()
+          + " does not exist yet. Creating it");
+      FileUtils.forceMkdir(outputDirectory);
     }
     File dotFile = new File(outputDirectory, config.getGraphName() + ".dot");
     BufferedWriter writer = new BufferedWriter(
@@ -57,7 +63,7 @@ public class DotRenderer implements IGraphRenderer {
     Map<String, Artifact> artifactMap = new HashMap<String, Artifact>();
 
     String title = config.getGroupId() + ":" + config.getArtifactId() + ":" + config.getVersion()
-        + " from " + dateFormat.format(new Date());
+        + " from " + DATE_FORMAT.format(new Date());
     writer.write("digraph  {\n");
     writer.write("   label=\"" + title + "\";\n");
     writer.write("   labelloc=t;\n");

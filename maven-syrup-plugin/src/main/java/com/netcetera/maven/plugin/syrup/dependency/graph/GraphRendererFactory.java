@@ -13,12 +13,19 @@
  */
 package com.netcetera.maven.plugin.syrup.dependency.graph;
 
+import org.apache.maven.plugin.logging.SystemStreamLog;
+
 import com.netcetera.maven.plugin.syrup.dependency.graph.dot.DotRenderer;
 
-
+/**
+ * 
+ */
 public class GraphRendererFactory {
 
+  private static final SystemStreamLog LOGGER = new SystemStreamLog();
+
   public IGraphRenderer getGraphRenderer(String renderer) {
+    LOGGER.info("Creating graph renderer: " + renderer);
     GraphRendererType type = GraphRendererType.valueOf(renderer);
     switch (type) {
       case dot:
@@ -27,5 +34,4 @@ public class GraphRendererFactory {
     }
     return null;
   }
-
 }

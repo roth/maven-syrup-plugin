@@ -20,16 +20,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 
 import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
 
 
 public class DotExecInterpreter implements IDotInterpreter {
 
+  private static final SystemStreamLog LOGGER = new SystemStreamLog();
+
   @Override
   public void convertToImage(GraphConfiguration config) throws IOException {
     File outputDirectory = new File(config.getOutputDirectory());
-    if (outputDirectory.exists()) {
+    if (!outputDirectory.exists()) {
+      LOGGER.info("output directory " + outputDirectory.getAbsolutePath()
+          + " does not exist yet. Creating it");
       FileUtils.forceMkdir(outputDirectory);
     }
     File imageFile = new File(outputDirectory, config.getGraphName() + "." + config.getOutputType());

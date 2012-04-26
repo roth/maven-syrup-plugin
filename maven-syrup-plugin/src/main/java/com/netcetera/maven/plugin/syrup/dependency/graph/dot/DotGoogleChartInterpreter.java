@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -32,16 +33,23 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 
 import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
 
-
+/**
+ * Send a request to google do create a dot file.
+ */
 public class DotGoogleChartInterpreter implements IDotInterpreter {
+
+  private static final SystemStreamLog LOGGER = new SystemStreamLog();
 
   @Override
   public void convertToImage(GraphConfiguration config) throws IOException {
     File outputDirectory = new File(config.getOutputDirectory());
-    if (outputDirectory.exists()) {
+    if (!outputDirectory.exists()) {
+      LOGGER.info("Output directory does not exist yet. Creating it: "
+          + outputDirectory.getAbsolutePath());
       FileUtils.forceMkdir(outputDirectory);
     }
     File imageFile = new File(outputDirectory, config.getGraphName() + ".png");
@@ -53,10 +61,11 @@ public class DotGoogleChartInterpreter implements IDotInterpreter {
     while ((line = reader.readLine()) != null) {
       builder.append(line);
     }
-    postDotCode(builder.toString(), imageFile);
+    postDotCode(config, builder.toString(), imageFile);
   }
 
-  private int postDotCode(String dotCode, File imageFile) throws IOException {
+  private int postDotCode(GraphConfiguration config, String dotCode, File imageFile)
+      throws IOException {
     HttpClient httpclient = new DefaultHttpClient();
     try {
       HttpPost post = new HttpPost("https://chart.googleapis.com/chart");
@@ -64,13 +73,21 @@ public class DotGoogleChartInterpreter implements IDotInterpreter {
 
       postParameters.add(new BasicNameValuePair("cht", "gv"));
 
-      // System.out.println("https://chart.googleapis.com/chart?cht=gv&chl=" + dotEncoded);
       postParameters.add(new BasicNameValuePair("chl", dotCode));
+
+      String width = config.getGraphWidth();
+      String height = config.getGraphHeight();
+      if (StringUtils.isNotEmpty(width) && StringUtils.isNotEmpty(height)) {
+        String dimensions = config.getGraphWidth() + "x" + config.getGraphHeight();
+        LOGGER.info("Adding dimensions: " + dimensions);
+        // postParameters.add(new BasicNameValuePair("chs", dimensions));
+      }
 
       post.setEntity(new UrlEncodedFormEntity(postParameters));
 
+      LOGGER.info("Sending request..");
       HttpResponse response = httpclient.execute(post);
-      System.out.println("Response: " + response.getStatusLine());
+      LOGGER.info("Response: " + response);
       HttpEntity responseEntity = response.getEntity();
 
       BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(imageFile));
