@@ -23,7 +23,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Repository;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.project.DefaultProjectBuilderConfiguration;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
@@ -36,6 +36,8 @@ import org.apache.maven.project.ProjectBuildingException;
  */
 public class DependencyHelper {
 
+  private static final SystemStreamLog LOGGER = new SystemStreamLog();
+
   private ArtifactFactory artifactFactory;
 
   private ArtifactResolver artifactResolver;
@@ -46,25 +48,20 @@ public class DependencyHelper {
 
   private List<Repository> remoteRepositories;
 
-  private Log log;
-
   /**
    * Constructor.
    * 
-   * @param log
    * @param artifactFactory artifact factory
    * @param artifactResolver artifact resolver
    * @param localRepository local repositories
    * @param projectBuilder project builder
    * @param remoteRepositories list of remote repositories
    */
-  public DependencyHelper(Log log,
-      ArtifactFactory artifactFactory,
+  public DependencyHelper(ArtifactFactory artifactFactory,
       ArtifactResolver artifactResolver,
       ArtifactRepository localRepository,
       MavenProjectBuilder projectBuilder,
       List<Repository> remoteRepositories) {
-    this.log = log;
     this.artifactFactory = artifactFactory;
     this.artifactResolver = artifactResolver;
     this.localRepository = localRepository;
@@ -94,10 +91,10 @@ public class DependencyHelper {
       artifactResolver.resolve(artifact, remoteRepositories, localRepository);
       return artifact;
     } catch (ArtifactResolutionException e) {
-      log.error("Unable to resolve artifact", e);
+      LOGGER.error("Unable to resolve artifact", e);
       throw new MojoExecutionException("Unable to resolve artifact:" + artifact, e);
     } catch (ArtifactNotFoundException e) {
-      log.error("Unable to find artifact", e);
+      LOGGER.error("Unable to find artifact", e);
       throw new MojoExecutionException("Unable to find artifact:" + artifact, e);
     }
 
@@ -113,6 +110,23 @@ public class DependencyHelper {
     } catch (ProjectBuildingException e) {
       throw new MojoExecutionException("Unable to convert artifact to project:" + artifact, e);
     }
+  }
+
+  /**
+   * Checks if the given artifact should be included.
+   * 
+   * @param config
+   * @param artifact
+   * @return
+   */
+  public static boolean isIncluded(GraphConfiguration config, Artifact artifact) {
+    String id = artifact.getGroupId() + ":" + artifact.getArtifactId();
+    for (String includePattern : config.getIncludes()) {
+      if (id.matches(includePattern)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

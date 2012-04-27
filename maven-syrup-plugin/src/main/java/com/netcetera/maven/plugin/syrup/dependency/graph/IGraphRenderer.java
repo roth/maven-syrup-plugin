@@ -19,15 +19,17 @@ import org.apache.maven.shared.dependency.tree.DependencyNode;
 
 import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
 
-
+/**
+ * Interface for graph renderers.
+ */
 public interface IGraphRenderer {
 
   /**
    * Creates a dependency graph starting from the given root node.
    * 
-   * @param config
-   * @param rootNode
-   * @throws IOException
+   * @param config configuration used to render the graph
+   * @param rootNode root node to start from
+   * @throws IOException error occured during rendering
    */
   void createDependencyGraph(GraphConfiguration config, DependencyNode rootNode) throws IOException;
 

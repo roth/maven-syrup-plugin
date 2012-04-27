@@ -14,12 +14,17 @@
 package com.netcetera.maven.plugin.syrup.dependency;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.maven.plugin.logging.SystemStreamLog;
 
 /**
  * Configuration object.
  */
 public class GraphConfiguration {
+
+  private static final SystemStreamLog LOGGER = new SystemStreamLog();
 
   private String groupId;
 
@@ -42,6 +47,36 @@ public class GraphConfiguration {
   private String graphWidth;
 
   private String graphHeight;
+
+  private Boolean recursive;
+
+  /**
+   * Default constructor for maven.
+   */
+  public GraphConfiguration() {
+
+  }
+
+  /**
+   * Copy constructor.
+   * 
+   * @param config configuration to copy.
+   */
+  public GraphConfiguration(GraphConfiguration config) {
+    this.groupId = config.groupId;
+    this.artifactId = config.artifactId;
+    this.version = config.version;
+    this.includes = Collections.unmodifiableList(config.includes);
+    this.outputDirectory = config.outputDirectory;
+    this.graphName = config.graphName;
+    this.renderer = config.renderer;
+    this.rendererPath = config.rendererPath;
+    this.outputType = config.outputType;
+    this.graphWidth = config.graphWidth;
+    this.graphHeight = config.graphHeight;
+    this.recursive = config.recursive;
+
+  }
 
   public String getGroupId() {
     return groupId;
@@ -71,7 +106,6 @@ public class GraphConfiguration {
   public void setVersion(String version) {
     this.version = version;
   }
-
 
   public List<String> getIncludes() {
     if (includes == null) {
@@ -172,6 +206,16 @@ public class GraphConfiguration {
 
   public String getGraphHeight() {
     return graphHeight;
+  }
+
+
+  public Boolean isRecursive() {
+    return recursive != null && recursive;
+  }
+
+
+  public void setRecursive(Boolean recursive) {
+    this.recursive = recursive;
   }
 
 

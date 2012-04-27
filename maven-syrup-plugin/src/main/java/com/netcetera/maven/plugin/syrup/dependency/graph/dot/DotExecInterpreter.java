@@ -24,7 +24,10 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 
 import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
 
-
+/**
+ * Dot interpreter that uses the 'dot' executable found on the location defined in the
+ * {@link GraphConfiguration} to render the dot file into a graphical output.
+ */
 public class DotExecInterpreter implements IDotInterpreter {
 
   private static final SystemStreamLog LOGGER = new SystemStreamLog();

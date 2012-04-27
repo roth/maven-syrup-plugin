@@ -30,7 +30,9 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.traversal.CollectingDependencyNodeVisitor;
 
+import com.netcetera.maven.plugin.syrup.dependency.DependencyHelper;
 import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
+import com.netcetera.maven.plugin.syrup.dependency.graph.GraphRendererType;
 import com.netcetera.maven.plugin.syrup.dependency.graph.IGraphRenderer;
 
 /**
@@ -69,14 +71,17 @@ public class DotRenderer implements IGraphRenderer {
     writer.write("   labelloc=t;\n");
     writer.write("   fontsize=18.0;\n");
     for (DependencyNode dependencyNode : nodes) {
-      if (dependencyNode.getParent() != null && isIncluded(config, dependencyNode.getArtifact())) {
+      DependencyNode parent = dependencyNode.getParent();
+      if (parent != null && DependencyHelper.isIncluded(config, dependencyNode.getArtifact())
+          && DependencyHelper.isIncluded(config, parent.getArtifact())) {
         Artifact toArtifact = dependencyNode.getArtifact();
-        Artifact fromArtifact = dependencyNode.getParent().getArtifact();
+        Artifact fromArtifact = parent.getArtifact();
         String toNodeName = getNodeName(toArtifact);
         artifactMap.put(toNodeName, toArtifact);
         String fromNodeName = getNodeName(fromArtifact);
         artifactMap.put(fromNodeName, fromArtifact);
         writer.write("   " + fromNodeName + " -> " + toNodeName + ";\n");
+        LOGGER.debug("Edge from " + fromNodeName + " to " + toNodeName);
       }
     }
     for (Map.Entry<String, Artifact> entry : artifactMap.entrySet()) {
@@ -87,18 +92,9 @@ public class DotRenderer implements IGraphRenderer {
     writer.close();
 
     DotInterpreterFactory factory = new DotInterpreterFactory();
-    IDotInterpreter interpreter = factory.getInterpreter(config.getRenderer());
+    GraphRendererType rendererType = GraphRendererType.valueOf(config.getRenderer());
+    IDotInterpreter interpreter = factory.getInterpreter(rendererType);
     interpreter.convertToImage(config);
-  }
-
-  private boolean isIncluded(GraphConfiguration config, Artifact artifact) {
-    String id = artifact.getGroupId() + ":" + artifact.getArtifactId();
-    for (String includePattern : config.getIncludes()) {
-      if (id.matches(includePattern)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   private String getNodeName(Artifact artifact) {

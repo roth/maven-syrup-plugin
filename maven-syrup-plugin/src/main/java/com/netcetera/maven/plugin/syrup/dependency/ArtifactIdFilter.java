@@ -18,11 +18,18 @@ import java.util.List;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
-
+/**
+ * Filters artifacts based on a list of includes matching the groupId and artifactId.
+ */
 public class ArtifactIdFilter implements ArtifactFilter {
 
   private List<String> regexPatterns;
 
+  /**
+   * Constructor.
+   * 
+   * @param regexPatterns including patterns
+   */
   public ArtifactIdFilter(List<String> regexPatterns) {
     this.regexPatterns = regexPatterns;
   }

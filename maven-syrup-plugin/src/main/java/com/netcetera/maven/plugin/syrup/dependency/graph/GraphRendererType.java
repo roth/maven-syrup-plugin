@@ -13,8 +13,17 @@
  */
 package com.netcetera.maven.plugin.syrup.dependency.graph;
 
-
+/**
+ * Renderer type for the output.
+ */
 public enum GraphRendererType {
+  /**
+   * Uses dot executable to render the output.
+   */
+  dot,
 
-  dot, googleDot;
+  /**
+   * Ues google web service to render the cart.
+   */
+  googleDot;
 }

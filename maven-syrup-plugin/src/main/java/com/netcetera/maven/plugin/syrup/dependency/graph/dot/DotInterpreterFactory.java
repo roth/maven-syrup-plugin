@@ -20,9 +20,14 @@ import com.netcetera.maven.plugin.syrup.dependency.graph.GraphRendererType;
  */
 public class DotInterpreterFactory {
 
-  public IDotInterpreter getInterpreter(String renderer) {
-    GraphRendererType type = GraphRendererType.valueOf(renderer);
-    switch (type) {
+  /**
+   * Factory that creates the appropriate Interpreter defined in the config.
+   * 
+   * @param rendererType type of the renderer
+   * @return new instance of the renderer
+   */
+  public IDotInterpreter getInterpreter(GraphRendererType rendererType) {
+    switch (rendererType) {
       case dot:
         return new DotExecInterpreter();
       case googleDot:

@@ -18,16 +18,22 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import com.netcetera.maven.plugin.syrup.dependency.graph.dot.DotRenderer;
 
 /**
- * 
+ * Factory that instantiates the appropriate renderer given given in rendererType.
  */
 public class GraphRendererFactory {
 
   private static final SystemStreamLog LOGGER = new SystemStreamLog();
 
-  public IGraphRenderer getGraphRenderer(String renderer) {
-    LOGGER.info("Creating graph renderer: " + renderer);
-    GraphRendererType type = GraphRendererType.valueOf(renderer);
-    switch (type) {
+  /**
+   * Instantiates the given renderer.
+   * 
+   * @param rendererType renderer to instantiate
+   * @return new instance of the renderer
+   */
+  public IGraphRenderer getGraphRenderer(GraphRendererType rendererType) {
+    LOGGER.info("Creating graph renderer: " + rendererType);
+
+    switch (rendererType) {
       case dot:
       case googleDot:
         return new DotRenderer();

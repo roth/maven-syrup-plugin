@@ -17,8 +17,16 @@ import java.io.IOException;
 
 import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
 
-
+/**
+ * Interface for dot interpreter classes.
+ */
 public interface IDotInterpreter {
 
+  /**
+   * Uses the given configuration to convert it into a graphical file (png, svg).
+   * 
+   * @param configuration configuration used to render the output
+   * @throws IOException rendering the image caused an error
+   */
   void convertToImage(GraphConfiguration configuration) throws IOException;
 }

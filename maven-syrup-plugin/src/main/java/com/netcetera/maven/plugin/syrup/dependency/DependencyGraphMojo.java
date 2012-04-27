@@ -30,15 +30,17 @@ import org.apache.maven.project.MavenProjectBuilder;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilder;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilderException;
+import org.apache.maven.shared.dependency.tree.traversal.CollectingDependencyNodeVisitor;
 
 import com.netcetera.maven.plugin.syrup.dependency.graph.GraphRendererFactory;
+import com.netcetera.maven.plugin.syrup.dependency.graph.GraphRendererType;
 import com.netcetera.maven.plugin.syrup.dependency.graph.IGraphRenderer;
 
 /**
  * Creates a dependency graph, either starting from the current module or from the module defined in
  * the configuration.
  * 
- * @goal graph the goal
+ * @goal graph
  * @phase process-sources
  */
 public class DependencyGraphMojo extends AbstractMojo {
@@ -110,17 +112,18 @@ public class DependencyGraphMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    DependencyHelper helper = new DependencyHelper(getLog(), artifactFactory, artifactResolver,
+    DependencyHelper helper = new DependencyHelper(artifactFactory, artifactResolver,
         localRepository, projectBuilder, project.getRemoteArtifactRepositories());
     for (GraphConfiguration graphConfiguration : graphConfigurations) {
       getLog().info("Starting with graph " + graphConfiguration.getRenderer());
       MavenProject rootProject = helper.findMavenProject(graphConfiguration);
       getLog().info("Working with " + rootProject.getUrl());
-      printDependenciesForArtifact(graphConfiguration, rootProject);
+      createGraphForRootProject(graphConfiguration, rootProject);
     }
   }
 
-  private void printDependenciesForArtifact(GraphConfiguration graphConfiguration,
+
+  private void createGraphForRootProject(GraphConfiguration graphConfiguration,
       MavenProject rootProject) throws MojoExecutionException {
     try {
       // FIXME the filter does not seem to work
@@ -130,14 +133,37 @@ public class DependencyGraphMojo extends AbstractMojo {
           artifactFactory, artifactMetadataSource, artifactFilter, artifactCollector);
 
       GraphRendererFactory factory = new GraphRendererFactory();
-      IGraphRenderer graphRenderer = factory.getGraphRenderer(graphConfiguration.getRenderer());
-      graphRenderer.createDependencyGraph(graphConfiguration, rootNode);
+      GraphRendererType rendererType = GraphRendererType.valueOf(graphConfiguration.getRenderer());
+      IGraphRenderer graphRenderer = factory.getGraphRenderer(rendererType);
+      if (graphConfiguration.isRecursive()) {
+        CollectingDependencyNodeVisitor visitor = new CollectingDependencyNodeVisitor();
+        rootNode.accept(visitor);
+
+        List<DependencyNode> nodes = visitor.getNodes();
+
+        for (DependencyNode node : nodes) {
+          GraphConfiguration clonedConfig = new GraphConfiguration(graphConfiguration);
+          if (DependencyHelper.isIncluded(clonedConfig, node.getArtifact())) {
+            clonedConfig.setGraphName(node.getArtifact().getArtifactId());
+            createGraph(clonedConfig, node, graphRenderer);
+          }
+        }
+      } else {
+        createGraph(graphConfiguration, rootNode, graphRenderer);
+      }
 
     } catch (DependencyTreeBuilderException e) {
       throw new MojoExecutionException("Could not create dependencyTree", e);
     } catch (IOException e) {
       throw new MojoExecutionException("Could create graph output", e);
     }
+  }
+
+
+  private void createGraph(GraphConfiguration graphConfiguration,
+      DependencyNode rootNode,
+      IGraphRenderer graphRenderer) throws IOException {
+    graphRenderer.createDependencyGraph(graphConfiguration, rootNode);
   }
 
 }
