@@ -32,7 +32,6 @@ public class DotExecInterpreter implements IDotInterpreter {
 
   private static final SystemStreamLog LOGGER = new SystemStreamLog();
 
-  @Override
   public void convertToImage(GraphConfiguration config) throws IOException {
     File outputDirectory = new File(config.getOutputDirectory());
     if (!outputDirectory.exists()) {

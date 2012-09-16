@@ -45,7 +45,6 @@ public class DotRenderer implements IGraphRenderer {
 
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
-  @Override
   public void createDependencyGraph(GraphConfiguration config, DependencyNode rootNode)
       throws IOException {
     CollectingDependencyNodeVisitor visitor = new CollectingDependencyNodeVisitor();

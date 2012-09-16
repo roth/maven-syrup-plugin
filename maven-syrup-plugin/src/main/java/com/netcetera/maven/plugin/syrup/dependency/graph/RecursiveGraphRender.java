@@ -26,7 +26,6 @@ import com.netcetera.maven.plugin.syrup.dependency.GraphConfiguration;
  */
 public class RecursiveGraphRender implements IGraphRenderer {
 
-  @Override
   public void createDependencyGraph(GraphConfiguration config, DependencyNode rootNode)
       throws IOException {
     CollectingDependencyNodeVisitor visitor = new CollectingDependencyNodeVisitor();

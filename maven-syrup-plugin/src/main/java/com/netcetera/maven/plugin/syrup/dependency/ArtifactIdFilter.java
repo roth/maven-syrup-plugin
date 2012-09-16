@@ -34,7 +34,6 @@ public class ArtifactIdFilter implements ArtifactFilter {
     this.regexPatterns = regexPatterns;
   }
 
-  @Override
   public boolean include(Artifact artifact) {
 
     String id = artifact.getGroupId() + ":" + artifact.getArtifactId();

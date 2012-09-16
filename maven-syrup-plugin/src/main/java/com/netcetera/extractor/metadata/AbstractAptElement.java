@@ -37,7 +37,6 @@ abstract class AbstractAptElement implements AptElement, Appendable {
     sink = new AptSink(writer);
   }
 
-  @Override
   public void append(AptElement element) {
     if (element != null) {
       sink.rawText(element.getText());
@@ -65,7 +64,6 @@ abstract class AbstractAptElement implements AptElement, Appendable {
     sink.text(aptElement.getText());
   }
 
-  @Override
   public String getText() {
     doBeforeClose();
     sink.flush();

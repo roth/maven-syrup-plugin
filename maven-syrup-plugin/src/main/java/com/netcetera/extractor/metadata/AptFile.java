@@ -73,7 +73,6 @@ public class AptFile implements Appendable {
 
   }
 
-  @Override
   public void append(AptElement element) {
 
     if (element != null) {

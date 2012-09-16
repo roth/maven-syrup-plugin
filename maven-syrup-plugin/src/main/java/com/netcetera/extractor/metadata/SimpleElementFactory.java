@@ -33,7 +33,6 @@ public final class SimpleElementFactory {
     }
 
 
-    @Override
     public String getText() {
       return defaultString(text, "-");
     }

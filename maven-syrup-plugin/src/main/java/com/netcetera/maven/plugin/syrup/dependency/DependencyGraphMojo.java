@@ -110,7 +110,6 @@ public class DependencyGraphMojo extends AbstractMojo {
   /** @component */
   private MavenProjectBuilder projectBuilder;
 
-  @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     DependencyHelper helper = new DependencyHelper(artifactFactory, artifactResolver,
         localRepository, projectBuilder, project.getRemoteArtifactRepositories());
