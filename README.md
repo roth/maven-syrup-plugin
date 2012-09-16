@@ -1,2 +1,37 @@
 maven-syrup-plugin
 ==================
+
+@code@
+           <plugin>
+                <groupId>com.netcetera</groupId>
+                <artifactId>maven-syrup-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <graphConfigurations>
+                        <graphConfiguration>
+                            <renderer>dot</renderer>
+                            <rendererPath>/usr/local/bin/dot</rendererPath>
+                            <outputType>svg</outputType>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <graphName>spring-mvc</graphName>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-webmvc</artifactId>
+                            <version>3.1.1.RELEASE</version>
+                            <includes>
+                                <include>.*spring.*</include>
+                            </includes>
+                        </graphConfiguration>
+                        <graphConfiguration>
+                            <renderer>googleDot</renderer>
+                            <outputType>svg</outputType>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <graphName>spring-core</graphName>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-core</artifactId>
+                            <version>3.1.1.RELEASE</version>
+                            <includes><include>.*spring.*</include></includes>
+                        </graphConfiguration>
+                    </graphConfigurations>
+                </configuration>
+            </plugin>
+ @code@
