@@ -1,7 +1,7 @@
 maven-syrup-plugin
 ==================
 
-@code@
+```xml
            <plugin>
                 <groupId>com.netcetera</groupId>
                 <artifactId>maven-syrup-plugin</artifactId>
@@ -34,4 +34,4 @@ maven-syrup-plugin
                     </graphConfigurations>
                 </configuration>
             </plugin>
- @code@
+```
