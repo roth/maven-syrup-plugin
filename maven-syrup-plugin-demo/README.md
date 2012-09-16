@@ -1,4 +1,4 @@
 maven-syrup-plugin-demo
 =======================
 
-call mvn com.netcetera:maven-syrup-plugin:graph to execute
+call {{mvn syrup:graph}} to execute
